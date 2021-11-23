@@ -2,6 +2,8 @@ import java.util.Random;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.nio.Buffer;
 
 public class javaPasswordManager {
     public static void main(String[] args) {
@@ -24,6 +26,7 @@ public class javaPasswordManager {
 
     }
 
+    //Generates a random password using User Input
     private static void randomizer() {
         Scanner sc = new Scanner(System.in);
         Random rand = new Random();
@@ -62,7 +65,13 @@ public class javaPasswordManager {
                 symbolInput -= 1;
             }
         }
-        System.out.println(password);
+        // https://stackoverflow.com/questions/4247810/scramble-a-word-using-java
+        List<Character> chars = Chars.asList(password.toCharArray());
+        Collections.shuffle(chars);
+        String shuffledPassword = new String(Chars.toArray(chars));
+
+        // System.out.println(password);
+        System.out.println(shuffledPassword);
         // ui.addAll(1, password);
     }
 
