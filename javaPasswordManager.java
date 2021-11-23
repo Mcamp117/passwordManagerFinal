@@ -14,6 +14,13 @@ public class javaPasswordManager {
         ArrayList <Integer> specialCharacters = new ArrayList<Integer>();
         ArrayList <String> passwordList = new ArrayList<String>();
 
+        ArrayList <String> firstName = new ArrayList<String>();
+        ArrayList <String> lastName = new ArrayList<String>();
+        ArrayList <String> username = new ArrayList<String>();
+        ArrayList <String> passwords = new ArrayList<String>();
+        
+        newUser(username, passwords, firstName, lastName);
+
         int loginTries = 5;
 
         ArrayList <String> category = new ArrayList<String>();
@@ -75,7 +82,30 @@ public class javaPasswordManager {
         // ui.addAll(1, password);
     }
 
+    private static void newUser(ArrayList <String> u, ArrayList <String> p,ArrayList <String> f, ArrayList <String> l ){
+        Scanner newUser = new Scanner(System.in);
+        System.out.println("What is your first name ");
+        String firstName = newUser.nextLine();
+        f.add(firstName);
+        System.out.println("What is your last name ");
+        String lastName = newUser.nextLine();
+        l.add(lastName);
+        System.out.println("What is your username ");
+        String userUsername = newUser.nextLine();
+        u.add(userUsername);
+        System.out.println("What is your password");
+        String userPassword = newUser.nextLine();
+        p.add(userPassword);
+    }
 
+    private static void login(ArrayList <String> u, ArrayList <String> p ){
+        Scanner login = new Scanner(System.in);
+        System.out.println("Input your username ");
+        String username=login.nextLine();
+        System.out.println("Input your password");
+        String password=login.nextLine();
+        if( p.contains(password)&&(u.contains(username))){}
+    }
 
     private static void printArray(int[] listy){
         for (int i=0; i<listy.length;i++){
