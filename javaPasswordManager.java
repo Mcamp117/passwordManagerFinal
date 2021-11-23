@@ -3,6 +3,9 @@ import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Collections;
+
+import java.lang.System;
+
 import java.nio.Buffer;
 
 public class javaPasswordManager {
@@ -10,7 +13,8 @@ public class javaPasswordManager {
         Scanner sc = new Scanner(System.in);
         Random rand = new Random();
         
-        ArrayList <Boolean> reqCheckList = new ArrayList<Boolean>();
+        boolean[] reqCheckList = {false,false,false,false};
+        
         ArrayList <Integer> specialCharacters = new ArrayList<Integer>();
         ArrayList <String> passwordList = new ArrayList<String>();
 
@@ -18,8 +22,7 @@ public class javaPasswordManager {
         ArrayList <String> lastName = new ArrayList<String>();
         ArrayList <String> username = new ArrayList<String>();
         ArrayList <String> passwords = new ArrayList<String>();
-        
-        newUser(username, passwords, firstName, lastName);
+
 
         int loginTries = 5;
 
@@ -29,82 +32,84 @@ public class javaPasswordManager {
         category.add("entertainment");
         category.add("bills");
 
-        randomizer();
-
-    }
-
-    //Generates a random password using User Input
-    private static void randomizer() {
-        Scanner sc = new Scanner(System.in);
-        Random rand = new Random();
-        ArrayList <String> ui = new ArrayList<String>();
-        
-        //User says how many Cap & Low Letters, Nums, and Syms
-        System.out.println("Input Number of Capital Letters: ");
-        int  capitalLetterInput = sc.nextInt();
-        System.out.println("Input Number of Lowercase Letters: ");
-        int  lowerLetterInput = sc.nextInt();
-        System.out.println("Input Number of Numbers: ");
-        int  numberInput = sc.nextInt();
-        System.out.println("Input Number of Symbols: ");
-        int  symbolInput = sc.nextInt();
-        String password = "";
-
-        //adds random items to the final output
-        for ( int count=0; count<capitalLetterInput; count++) {
-            password += (char)getRandInt(65,91);
+        System.out.println("Are you a new user (y or n): ");
+        String yesOrNo = sc.nextLine();
+        if (yesOrNo.equals("y") || yesOrNo.equals("yes")) {
+            newUser(username, passwords, firstName, lastName);
         }
+        System.out.println(PasswordGenerator.Generate());
 
-        for ( int count=0; count<lowerLetterInput; count++) {
-            password += (char)getRandInt(97,122);
-        }
 
-        for ( int count=0; count<numberInput; count++) {
-            password += (char)getRandInt(48, 57);
-        }
-
-        int special = 0;
-        String symbolsDigit = "";
-        while (!(symbolInput == 0)) {
-            special = getRandInt(33,64);
-            if ((special == 33) || (special == 35) || (special == 36) || (special == 37) || (special == 38) || (special == 40) || (special == 41) || (special == 42) || (special == 64)) {
-                password += (char) special;
-                symbolInput -= 1;
-            }
-        }
-        // https://stackoverflow.com/questions/4247810/scramble-a-word-using-java
-        List<Character> chars = Chars.asList(password.toCharArray());
-        Collections.shuffle(chars);
-        String shuffledPassword = new String(Chars.toArray(chars));
-
-        // System.out.println(password);
-        System.out.println(shuffledPassword);
-        // ui.addAll(1, password);
     }
 
     private static void newUser(ArrayList <String> u, ArrayList <String> p,ArrayList <String> f, ArrayList <String> l ){
         Scanner newUser = new Scanner(System.in);
-        System.out.println("What is your first name ");
+        System.out.println("What is your first name: ");
         String firstName = newUser.nextLine();
         f.add(firstName);
-        System.out.println("What is your last name ");
+        System.out.println("What is your last name: ");
         String lastName = newUser.nextLine();
         l.add(lastName);
-        System.out.println("What is your username ");
+        System.out.println("What is your username: ");
         String userUsername = newUser.nextLine();
         u.add(userUsername);
-        System.out.println("What is your password");
+        System.out.println("What is your password (Symbols can only be 1-0 Shift): ");
         String userPassword = newUser.nextLine();
         p.add(userPassword);
     }
 
-    private static void login(ArrayList <String> u, ArrayList <String> p ){
+    private static void login(ArrayList <String> u, ArrayList <String> p){
         Scanner login = new Scanner(System.in);
-        System.out.println("Input your username ");
-        String username=login.nextLine();
-        System.out.println("Input your password");
-        String password=login.nextLine();
-        if( p.contains(password)&&(u.contains(username))){}
+        boolean loginChecker=false;
+        int loginTries = 5;
+        while(loginTries!=0){
+            System.out.println("Input your username: ");
+            String username=login.nextLine();
+            System.out.println("Input your password: ");
+            String password=login.nextLine();
+            if( p.contains(password)&&(u.contains(username))){
+                loginTries=0;
+                int pindex=p.indexOf(password);
+                int uindex=u.indexOf(username);
+                if(pindex==uindex){
+                    System.out.println("Login Succesful");
+                    break;
+                }
+            }
+            else{
+                System.out.println("Incorrect Information, Try Again");
+                loginTries-=1;
+            }
+        }
+        if(loginTries==0){
+            System.out.println("0 tries remaining, we are calling the police");
+            System.exit(0);
+        }
+    }
+
+    private static void passwordChecker(boolean[] cl,String p){
+        char[] password = p.toCharArray();
+        if (passwords.length()>=8) {
+            cl[0]=true;
+            for(int i=0; i<passwords.length(); i++){
+                if(passwords.contains(lowerAlphabet)){
+                    cl[1]=true;
+                }
+                else if(passwords.contains(upperAlphabet)){
+                    cl[2]=true;
+                }
+                else if(passwords.contains(symbols)){
+                    cl[3]=true;
+                }
+                else if(passwords.contains(numbers)){
+                    cl[4]=true;
+                }
+            }
+            for(boolean value: cl){
+                if(value==false){
+                }
+            }
+        }
     }
 
     private static void printArray(int[] listy){
